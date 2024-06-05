@@ -4,12 +4,8 @@ import { getUser } from "./users";
 
 async function hasAccessToOrg(ctx, tokenIdentifier, orgId) {
   const user = await getUser(ctx, tokenIdentifier);
-  console.log("user", user);
   const hasAccess =
     user.orgIds.includes(orgId) || user.tokenIdentifier.includes(orgId);
-
-  console.log(hasAccess);
-
   return hasAccess;
 }
 export const createFiles = mutation({
@@ -19,7 +15,6 @@ export const createFiles = mutation({
   },
   async handler(ctx, args) {
     const identity = await ctx.auth.getUserIdentity();
-    console.log("identity", identity);
     if (!identity) {
       throw new Error("You must be signed in to create a file");
     }
@@ -46,7 +41,6 @@ export const getFiles = query({
   },
   async handler(ctx, args) {
     const identity = await ctx.auth.getUserIdentity();
-    console.log("identity", identity);
     if (!identity) {
       return [];
     }
