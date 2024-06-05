@@ -1,4 +1,11 @@
-import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import {
+  OrganizationSwitcher,
+  SignInButton,
+  SignOutButton,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 export const Header = () => {
   return (
@@ -8,6 +15,11 @@ export const Header = () => {
         <div className=" space-x-4">
           <OrganizationSwitcher />
           <UserButton />
+          <SignedOut>
+            <SignInButton>
+              <Button> Sign in</Button>
+            </SignInButton>
+          </SignedOut>
         </div>
       </div>
     </div>

@@ -9,15 +9,21 @@ import {
   SignedIn,
   SignedOut,
   useOrganization,
+  useUser,
 } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 
 export default function Home() {
-  const { organization } = useOrganization();
-  const files = useQuery(
-    api.files.getFiles,
-    organization?.id ? { orgId: organization.id } : "skip"
-  );
+  const organization = useOrganization();
+  const user = useUser();
+  console.log("organization", organization, user);
+
+  let orgId = undefined;
+
+  if (organization.isLoaded && user.isLoaded) {
+    orgId = organization.organization?.id ?? user.user?.id;
+  }
+  const files = useQuery(api.files.getFiles, orgId ? { orgId } : "skip");
   const createFiles = useMutation(api.files.createFiles);
   return (
     <div>
@@ -41,7 +47,7 @@ export default function Home() {
           if (!organization) {
             return;
           }
-          createFiles({ title: "Hello", orgId: organization.id });
+          createFiles({ title: "Hello", orgId });
         }}
       >
         Click me
