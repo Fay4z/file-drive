@@ -8,10 +8,16 @@ async function hasAccessToOrg(ctx, tokenIdentifier, orgId) {
     user.orgIds.includes(orgId) || user.tokenIdentifier.includes(orgId);
   return hasAccess;
 }
+
+export const generateUploadUrl = mutation(async (ctx) => {
+  return await ctx.storage.generateUploadUrl();
+});
+
 export const createFiles = mutation({
   args: {
     title: v.string(),
     orgId: v.string(),
+    fileId: v.id("_storage"),
   },
   async handler(ctx, args) {
     const identity = await ctx.auth.getUserIdentity();
@@ -31,6 +37,7 @@ export const createFiles = mutation({
     await ctx.db.insert("files", {
       title: args.title,
       orgId: args.orgId,
+      fileId: args.fileId,
     });
   },
 });

@@ -26,6 +26,9 @@ import { useForm } from "react-hook-form";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { Loader, Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -35,8 +38,12 @@ const formSchema = z.object({
 });
 
 export default function Home() {
+  const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
+  const { toast } = useToast();
   const organization = useOrganization();
   const user = useUser();
+
+  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
 
   let orgId = undefined;
 
@@ -56,11 +63,36 @@ export default function Home() {
 
   const fileRef = form.register("file");
 
-  // 2. Define a submit handler.
-  function onSubmit(values) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values) {
     console.log(values);
+    // Step 1: Get a short-lived upload URL
+    const postUrl = await generateUploadUrl();
+    // Step 2: POST the file to the URL
+    const result = await fetch(postUrl, {
+      method: "POST",
+      headers: { "Content-Type": values.file[0].type },
+      body: values.file[0],
+    });
+
+    const { storageId } = await result.json();
+
+    try {
+      await createFiles({ title: values.title, fileId: storageId, orgId });
+      form.reset();
+      setIsFileDialogOpen(false);
+
+      toast({
+        variant: "success",
+        title: "File Uploaded",
+        description: "Your file has been uploaded",
+      });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "File not Uploaded",
+        description: "Error during file upload process",
+      });
+    }
   }
 
   return (
@@ -68,8 +100,14 @@ export default function Home() {
       <div className=" flex justify-between items-center">
         <div>File Upload</div>
         <div>
-          <Dialog asChild>
-            <DialogTrigger>
+          <Dialog
+            open={isFileDialogOpen}
+            onOpenChange={(isOpen) => {
+              setIsFileDialogOpen(isOpen);
+              form.reset();
+            }}
+          >
+            <DialogTrigger asChild>
               <Button> Upload a File</Button>
             </DialogTrigger>
             <DialogContent>
@@ -118,7 +156,16 @@ export default function Home() {
                           </FormItem>
                         )}
                       />
-                      <Button type="submit">Submit</Button>
+                      <Button
+                        type="submit"
+                        disabled={form.formState.isSubmitting}
+                        className="flex gap-2"
+                      >
+                        {form.formState.isSubmitting && (
+                          <Loader2 className="w-4 h-4 animate-spin " />
+                        )}
+                        Submit
+                      </Button>
                     </form>
                   </Form>
                 </DialogDescription>
