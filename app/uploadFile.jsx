@@ -64,17 +64,37 @@ export default function UploadFile() {
 
   async function onSubmit(values) {
     console.log(values);
+
+    const fileType = values.file[0].type;
+
     const postUrl = await generateUploadUrl();
     const result = await fetch(postUrl, {
       method: "POST",
-      headers: { "Content-Type": values.file[0].type },
+      headers: { "Content-Type": fileType },
       body: values.file[0],
     });
 
     const { storageId } = await result.json();
 
+    console.log(fileType);
+
+    const type = {
+      "image/jpeg": "image",
+      "image/png": "image",
+      "image/jpg": "image",
+      "image/gif": "image",
+      "application/pdf": "pdf",
+      "application/msword": "doc",
+      "text/csv": "csv",
+    };
+
     try {
-      await createFiles({ title: values.title, fileId: storageId, orgId });
+      await createFiles({
+        title: values.title,
+        fileId: storageId,
+        orgId,
+        type: type[fileType],
+      });
       form.reset();
       setIsFileDialogOpen(false);
 
