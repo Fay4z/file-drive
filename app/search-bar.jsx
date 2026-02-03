@@ -41,7 +41,7 @@ export const SearchBar = ({ query, setQuery }) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter text to search" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

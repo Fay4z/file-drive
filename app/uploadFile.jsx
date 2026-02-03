@@ -139,10 +139,10 @@ export default function UploadFile() {
                     <FormItem>
                       <FormLabel>Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="shadcn" {...field} />
+                        <Input placeholder="" {...field} />
                       </FormControl>
                       <FormDescription>
-                        This is your public display name.
+                        Pick a name that describes the file better.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -159,7 +159,7 @@ export default function UploadFile() {
                         <Input type="file" placeholder="shadcn" {...fileRef} />
                       </FormControl>
                       <FormDescription>
-                        This is your public display name.
+                        Uploading one file at a time is supported.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

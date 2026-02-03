@@ -117,7 +117,7 @@ const FileCard = ({ file }) => {
   };
 
   return (
-    <Card>
+    <Card className=" bg-gray-50">
       <CardHeader>
         <CardTitle className=" relative">
           {file.title}
@@ -128,7 +128,8 @@ const FileCard = ({ file }) => {
       </CardHeader>
       <CardContent>
         <div className=" flex items-center gap-2 text-md">
-          <p>{file.type}</p>
+          <p>File Type: </p>
+          <p>{file.type.toUpperCase()}</p>
           <p>{typeIcons[file.type]}</p>
         </div>
       </CardContent>
