@@ -9,6 +9,7 @@ import Image from "next/image";
 import { LoaderCircle } from "lucide-react";
 import { SearchBar } from "./search-bar";
 import { useState } from "react";
+import WelcomePage from "./welcome-page";
 
 const Placeholder = () => {
   return (
@@ -40,7 +41,7 @@ export default function Home() {
 
   return (
     <div className=" container mx-auto mt-12">
-      {user.isSignedIn == false && <div>welcome to File Storage</div>}
+      {user.isSignedIn == false && <WelcomePage />}
       {isLoading && user.isSignedIn && (
         <div className=" flex flex-col items-center w-full gap-4 pt-24">
           <LoaderCircle className="w-16 h-16 animate-spin " />
