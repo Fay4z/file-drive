@@ -10,8 +10,8 @@ export default function WelcomePage() {
         </h1>
 
         <p className="mt-4 text-lg text-gray-600">
-          Securely upload, store, and manage your files in one place. Built for
-          speed and reliability.
+          Effortlessly upload, store, and manage your files in one place. Built
+          for speed and reliability.
         </p>
 
         <div className="mt-8 flex items-center justify-center gap-4 flex-wrap">
