@@ -30,7 +30,7 @@ export const createFiles = mutation({
     const hasAccess = await hasAccessToOrg(
       ctx,
       identity.tokenIdentifier,
-      args.orgId
+      args.orgId,
     );
 
     if (!hasAccess) {
@@ -59,7 +59,7 @@ export const getFiles = query({
     const hasAccess = await hasAccessToOrg(
       ctx,
       identity.tokenIdentifier,
-      args.orgId
+      args.orgId,
     );
     if (!hasAccess) {
       return [];
@@ -73,7 +73,7 @@ export const getFiles = query({
 
     if (query) {
       return files.filter((file) =>
-        file.title.toLowerCase().includes(query.toLowerCase())
+        file.title.toLowerCase().includes(query.toLowerCase()),
       );
     } else {
       return files;
@@ -87,7 +87,6 @@ export const deleteFile = mutation({
   },
   async handler(ctx, args) {
     const identity = await ctx.auth.getUserIdentity();
-    console.log("identity", identity);
     if (!identity) {
       throw new Error("You must be signed in to delete a file");
     }
@@ -101,7 +100,7 @@ export const deleteFile = mutation({
     const hasAccess = await hasAccessToOrg(
       ctx,
       identity.tokenIdentifier,
-      file.orgId
+      file.orgId,
     );
 
     if (!hasAccess) {
@@ -122,14 +121,12 @@ export const getImageUrl = query({
       return [];
     }
     const file = await ctx.db.get(args.id);
-    console.log("file", file);
 
     if (!file) {
       throw new ConvexError("file not found");
     }
 
     const url = await ctx.storage.getUrl(file.fileId);
-    console.log("url", url);
     return url;
     // if (!file) {
     //   throw new ConvexError("file not found");

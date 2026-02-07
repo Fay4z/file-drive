@@ -63,8 +63,6 @@ export default function UploadFile() {
   const fileRef = form.register("file");
 
   async function onSubmit(values) {
-    console.log(values);
-
     const fileType = values.file[0].type;
 
     const postUrl = await generateUploadUrl();
@@ -75,8 +73,6 @@ export default function UploadFile() {
     });
 
     const { storageId } = await result.json();
-
-    console.log(fileType);
 
     const type = {
       "image/jpeg": "image",

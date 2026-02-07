@@ -31,7 +31,6 @@ export default function Home() {
   const [query, setQuery] = useState("");
 
   let orgId = undefined;
-  console.log(user)
   if (organization.isLoaded && user.isLoaded) {
     orgId = organization.organization?.id ?? user.user?.id;
   }
@@ -41,9 +40,7 @@ export default function Home() {
 
   return (
     <div className=" container mx-auto mt-12">
-      {user.isSignedIn == false && (
-        <div>welcome to File Storage</div>
-      )}
+      {user.isSignedIn == false && <div>welcome to File Storage</div>}
       {isLoading && user.isSignedIn && (
         <div className=" flex flex-col items-center w-full gap-4 pt-24">
           <LoaderCircle className="w-16 h-16 animate-spin " />
